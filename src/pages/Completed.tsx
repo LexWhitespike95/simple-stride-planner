@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Grid, List, Calendar } from "lucide-react";
+import { Search, CheckSquare, Grid, List } from "lucide-react";
 import { Task } from "@/types/task";
 import { useTasks } from "@/hooks/useTasks";
 import { TaskCard } from "@/components/TaskCard";
@@ -8,10 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-const Index = () => {
+const Completed = () => {
   const {
-    getActiveTasks,
-    addTask,
+    getCompletedTasks,
     updateTask,
     deleteTask,
     toggleTaskStatus,
@@ -19,24 +18,17 @@ const Index = () => {
   } = useTasks();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPriority, setSelectedPriority] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>();
 
-  const activeTasks = getActiveTasks();
+  const completedTasks = getCompletedTasks();
 
   // Фильтрация задач
-  const filteredTasks = activeTasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesPriority = selectedPriority === "all" || task.priority === selectedPriority;
-    return matchesSearch && matchesPriority;
+  const filteredTasks = completedTasks.filter(task => {
+    return task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+           (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()));
   });
-
-  const handleAddTask = (formData: any) => {
-    addTask(formData);
-  };
 
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
@@ -50,25 +42,10 @@ const Index = () => {
     }
   };
 
-  const handleSaveTask = (formData: any, taskId?: string) => {
-    if (taskId) {
-      handleUpdateTask(formData, taskId);
-    } else {
-      handleAddTask(formData);
-    }
-  };
-
   const handleCloseDialog = () => {
     setIsTaskDialogOpen(false);
     setEditingTask(undefined);
   };
-
-  const priorityFilters = [
-    { value: "all", label: "Все задачи", count: filteredTasks.length },
-    { value: "high", label: "Высокий", count: activeTasks.filter(t => t.priority === "high").length },
-    { value: "medium", label: "Средний", count: activeTasks.filter(t => t.priority === "medium").length },
-    { value: "low", label: "Низкий", count: activeTasks.filter(t => t.priority === "low").length },
-  ];
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-background">
@@ -77,19 +54,13 @@ const Index = () => {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Мои задачи</h1>
+              <h1 className="text-2xl font-bold text-foreground">Выполненные задачи</h1>
               <p className="text-muted-foreground">
-                {activeTasks.length === 0 
-                  ? "У вас пока нет активных задач" 
-                  : `Активных задач: ${activeTasks.length}`}
+                {completedTasks.length === 0 
+                  ? "У вас пока нет выполненных задач" 
+                  : `Выполнено задач: ${completedTasks.length}`}
               </p>
             </div>
-            <Button 
-              onClick={() => setIsTaskDialogOpen(true)}
-              className="bg-primary hover:bg-primary-hover text-primary-foreground"
-            >
-              Добавить задачу
-            </Button>
           </div>
         </div>
       </header>
@@ -101,27 +72,18 @@ const Index = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Поиск задач..."
+              placeholder="Поиск выполненных задач..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
             />
           </div>
 
-          {/* Фильтры и переключатель вида */}
+          {/* Переключатель вида */}
           <div className="flex items-center justify-between gap-4">
-            <div className="flex gap-2">
-              {priorityFilters.map((filter) => (
-                <Badge
-                  key={filter.value}
-                  variant={selectedPriority === filter.value ? "default" : "secondary"}
-                  className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                  onClick={() => setSelectedPriority(filter.value)}
-                >
-                  {filter.label} ({filter.count})
-                </Badge>
-              ))}
-            </div>
+            <Badge variant="secondary">
+              Найдено: {filteredTasks.length}
+            </Badge>
 
             <div className="flex gap-1 border border-border rounded-lg p-1">
               <Button
@@ -145,23 +107,15 @@ const Index = () => {
         {/* Список задач */}
         {filteredTasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <Calendar className="h-16 w-16 text-muted-foreground mb-4" />
+            <CheckSquare className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">
-              {searchQuery || selectedPriority !== "all" ? "Ничего не найдено" : "Нет активных задач"}
+              {searchQuery ? "Ничего не найдено" : "Нет выполненных задач"}
             </h3>
-            <p className="text-muted-foreground mb-4">
-              {searchQuery || selectedPriority !== "all" 
+            <p className="text-muted-foreground">
+              {searchQuery 
                 ? "Попробуйте изменить критерии поиска"
-                : "Создайте свою первую задачу, чтобы начать работу"}
+                : "Выполненные задачи будут отображаться здесь"}
             </p>
-            {!searchQuery && selectedPriority === "all" && (
-              <Button 
-                onClick={() => setIsTaskDialogOpen(true)}
-                className="bg-primary hover:bg-primary-hover text-primary-foreground"
-              >
-                Добавить задачу
-              </Button>
-            )}
           </div>
         ) : (
           <div className={`grid gap-4 ${
@@ -183,15 +137,15 @@ const Index = () => {
         )}
       </div>
 
-      {/* Диалог создания/редактирования задачи */}
+      {/* Диалог редактирования задачи */}
       <TaskDialog
         open={isTaskDialogOpen}
         onOpenChange={handleCloseDialog}
         task={editingTask}
-        onSave={handleSaveTask}
+        onSave={handleUpdateTask}
       />
     </div>
   );
 };
 
-export default Index;
+export default Completed;
