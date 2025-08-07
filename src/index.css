@@ -17,8 +17,13 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 214.3 78.4% 49.8%;  /* Blue #005FFF */
     --primary-foreground: 210 40% 98%;
+    
+    /* Priority colors */
+    --priority-high: 0 84.2% 60.2%;    /* Red */
+    --priority-medium: 31 81% 56%;      /* Orange */
+    --priority-low: 142 76% 36%;        /* Green */
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -65,8 +70,13 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 214.3 78.4% 49.8%;  /* Blue #005FFF */
+    --primary-foreground: 210 40% 98%;
+    
+    /* Priority colors */
+    --priority-high: 0 62.8% 30.6%;    /* Dark Red */
+    --priority-medium: 31 70% 35%;      /* Dark Orange */
+    --priority-low: 142 76% 26%;        /* Dark Green */
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
