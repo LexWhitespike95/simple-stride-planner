@@ -1,20 +1,16 @@
-import { useState, useMemo } from 'react';
-import { Input } from '@/components/ui/input';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Task } from '@/types';
 import { TaskDialog } from './TaskDialog';
 import { cn } from '@/lib/utils';
-import { useSettings } from '@/hooks/useSettings';
 
 interface MonthlyCalendarProps {
   tasks: Task[];
   onTaskCreate: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onTaskUpdate: (id: string, updates: Partial<Task>) => void;
-  onTaskArchive: (id: string) => void;
   getTasksForDate: (date: Date) => Task[];
-  openDaySidebar: (date: Date) => void;
 }
 
 const MONTHS = [
@@ -24,22 +20,11 @@ const MONTHS = [
 
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchive, getTasksForDate, openDaySidebar }: MonthlyCalendarProps) {
-  const { settings } = useSettings();
+export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, getTasksForDate }: MonthlyCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredTasks = useMemo(() => {
-    return tasks.filter(task => 
-      !task.isArchived &&
-      (task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (task.description && task.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (task.tags && task.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))))
-    );
-  }, [tasks, searchTerm]);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -48,12 +33,14 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
   const lastDayOfMonth = new Date(year, month + 1, 0);
   const startDate = new Date(firstDayOfMonth);
   
+  // Adjust to start from Monday
   const firstDayWeekday = (firstDayOfMonth.getDay() + 6) % 7;
   startDate.setDate(startDate.getDate() - firstDayWeekday);
 
   const calendarDays: Date[] = [];
   const current = new Date(startDate);
   
+  // Generate 6 weeks (42 days) to ensure full month view
   for (let i = 0; i < 42; i++) {
     calendarDays.push(new Date(current));
     current.setDate(current.getDate() + 1);
@@ -72,7 +59,9 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
   };
 
   const handleDayClick = (date: Date) => {
-    openDaySidebar(date);
+    setSelectedDate(date);
+    setSelectedTask(null);
+    setIsTaskDialogOpen(true);
   };
 
   const handleTaskClick = (task: Task, event: React.MouseEvent) => {
@@ -103,19 +92,6 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
     }
   };
 
-  const tileSizeStyles = {
-    small: 'min-h-[90px]',
-    normal: 'min-h-[120px]',
-    large: 'min-h-[150px]',
-  };
-  const dayCardClass = tileSizeStyles[settings.interface.taskTileSize] || tileSizeStyles.normal;
-
-  const taskItemStyle = {
-    small: 'p-0.5 rounded text-[10px]',
-    normal: 'p-1 rounded text-xs',
-    large: 'p-1.5 rounded text-sm',
-  }[settings.interface.taskTileSize] || 'p-1 rounded text-xs';
-
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
@@ -141,13 +117,6 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
-        <div className="w-1/3">
-          <Input 
-            placeholder="Поиск..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
       </div>
 
       {/* Calendar Grid */}
@@ -164,14 +133,13 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
           {calendarDays.map((date, index) => {
             const isCurrentMonth = date.getMonth() === month;
             const isToday = new Date().toDateString() === date.toDateString();
-            const dayTasks = getTasksForDate(date).filter(task => filteredTasks.includes(task));
+            const dayTasks = getTasksForDate(date);
 
             return (
               <Card
                 key={index}
                 className={cn(
-                  "p-2 cursor-pointer transition-colors hover:bg-muted/50",
-                  dayCardClass,
+                  "min-h-[100px] p-2 cursor-pointer transition-colors hover:bg-muted/50",
                   !isCurrentMonth && "text-muted-foreground bg-muted/20",
                   isToday && "ring-2 ring-primary"
                 )}
@@ -190,8 +158,7 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
                       <div
                         key={task.id}
                         className={cn(
-                          "cursor-pointer hover:opacity-80 text-white",
-                          taskItemStyle,
+                          "p-1 rounded text-xs cursor-pointer hover:opacity-80 text-white",
                           getPriorityColor(task.priority),
                           task.completed && "opacity-50 line-through"
                         )}
@@ -227,7 +194,6 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
         task={selectedTask}
         selectedDate={selectedDate}
         onSubmit={handleTaskSubmit}
-        onArchive={onTaskArchive} // Pass the function here
       />
     </div>
   );

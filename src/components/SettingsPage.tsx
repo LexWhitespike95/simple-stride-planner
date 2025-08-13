@@ -13,7 +13,6 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { useSettings } from '@/hooks/useSettings';
-import { useTheme } from "@/components/ThemeProvider";
 import { Download, Upload } from 'lucide-react';
 
 interface SettingsPageProps {
@@ -22,7 +21,6 @@ interface SettingsPageProps {
 }
 
 export function SettingsPage({ onExportTasks, onImportTasks }: SettingsPageProps) {
-  const { setTheme } = useTheme();
   const { settings, updateInterfaceSettings, updateNotificationSettings, updateAutomationSettings } = useSettings();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -81,10 +79,9 @@ export function SettingsPage({ onExportTasks, onImportTasks }: SettingsPageProps
                 <Label htmlFor="theme">Тема оформления</Label>
                 <Select
                   value={settings.interface.theme}
-                  onValueChange={(value: 'light' | 'dark') => {
-                    updateInterfaceSettings({ theme: value });
-                    setTheme(value);
-                  }}
+                  onValueChange={(value: 'light' | 'dark') => 
+                    updateInterfaceSettings({ theme: value })
+                  }
                 >
                   <SelectTrigger className="w-32">
                     <SelectValue />

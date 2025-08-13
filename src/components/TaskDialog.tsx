@@ -26,7 +26,6 @@ interface TaskDialogProps {
   selectedDate?: Date | null;
   onSubmit: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onDelete?: (id: string) => void;
-  onArchive?: (id: string) => void;
 }
 
 export function TaskDialog({ 
@@ -35,17 +34,13 @@ export function TaskDialog({
   task, 
   selectedDate, 
   onSubmit,
-  onDelete,
-  onArchive
+  onDelete 
 }: TaskDialogProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium');
   const [completed, setCompleted] = useState(false);
   const [dueDate, setDueDate] = useState('');
-  const [time, setTime] = useState('');
-  const [recurrenceRule, setRecurrenceRule] = useState<'daily' | 'weekly' | 'monthly' | 'yearly' | 'weekdays' | 'weekends' | 'none'>('none');
-  const [tags, setTags] = useState('');
 
   useEffect(() => {
     if (task) {
@@ -54,9 +49,6 @@ export function TaskDialog({
       setPriority(task.priority);
       setCompleted(task.completed);
       setDueDate(task.dueDate.toISOString().split('T')[0]);
-      setTime(task.time || '');
-      setRecurrenceRule(task.recurrenceRule || 'none');
-      setTags((task.tags || []).join(', '));
     } else {
       setTitle('');
       setDescription('');
@@ -67,9 +59,6 @@ export function TaskDialog({
       } else {
         setDueDate(new Date().toISOString().split('T')[0]);
       }
-      setTime('');
-      setRecurrenceRule('none');
-      setTags('');
     }
   }, [task, selectedDate, open]);
 
@@ -83,19 +72,9 @@ export function TaskDialog({
       priority,
       completed,
       dueDate: new Date(dueDate),
-      time: time || undefined,
-      recurrenceRule: recurrenceRule === 'none' ? undefined : recurrenceRule,
-      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag),
     });
 
     onOpenChange(false);
-  };
-
-  const handleArchive = () => {
-    if (task && onArchive) {
-      onArchive(task.id);
-      onOpenChange(false);
-    }
   };
 
   const handleDelete = () => {
@@ -139,7 +118,7 @@ export function TaskDialog({
 
           <div>
             <Label htmlFor="priority">Приоритет</Label>
-            <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
+            <Select value={priority} onValueChange={(value: any) => setPriority(value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -152,53 +131,14 @@ export function TaskDialog({
           </div>
 
           <div>
-            <Label htmlFor="recurrenceRule">Повторение</Label>
-            <Select value={recurrenceRule} onValueChange={(value: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'weekdays' | 'weekends' | 'none') => setRecurrenceRule(value)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">Нет</SelectItem>
-                <SelectItem value="daily">Ежедневно</SelectItem>
-                <SelectItem value="weekly">Еженедельно</SelectItem>
-                <SelectItem value="monthly">Ежемесячно</SelectItem>
-                <SelectItem value="yearly">Ежегодно</SelectItem>
-                <SelectItem value="weekdays">По будням</SelectItem>
-                <SelectItem value="weekends">По выходным</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="tags">Теги (через запятую)</Label>
+            <Label htmlFor="dueDate">Дата выполнения</Label>
             <Input
-              id="tags"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              placeholder="например, работа, дом, важно"
+              id="dueDate"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              required
             />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="dueDate">Дата</Label>
-              <Input
-                id="dueDate"
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="time">Время</Label>
-              <Input
-                id="time"
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-              />
-            </div>
           </div>
 
           {task && (
@@ -221,16 +161,6 @@ export function TaskDialog({
                   onClick={handleDelete}
                 >
                   Удалить
-                </Button>
-              )}
-              {task && onArchive && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleArchive}
-                  className="ml-2"
-                >
-                  Архивировать
                 </Button>
               )}
             </div>

@@ -1,30 +1,16 @@
-import { Input } from '@/components/ui/input';
 import { useTasks } from '@/hooks/useTasks';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { TaskDialog } from '@/components/TaskDialog';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Task } from '@/types';
 import { Plus } from 'lucide-react';
-import { useSettings } from '@/hooks/useSettings';
-import { cn } from '@/lib/utils';
 
 const List = () => {
   const { tasks, addTask, updateTask, deleteTask } = useTasks();
-  const { settings } = useSettings();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredTasks = useMemo(() => {
-    return tasks.filter(task => 
-      !task.isArchived &&
-      (task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (task.description && task.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (task.tags && task.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))))
-    );
-  }, [tasks, searchTerm]);
 
   const handleTaskSubmit = (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => {
     if (selectedTask) {
@@ -54,41 +40,10 @@ const List = () => {
     }
   };
 
-  const tileSizeStyles = {
-    small: {
-      card: 'p-2',
-      title: 'text-sm font-medium',
-      description: 'text-xs',
-      dueDate: 'text-xs',
-    },
-    normal: {
-      card: 'p-4',
-      title: 'font-medium',
-      description: 'text-sm',
-      dueDate: 'text-xs',
-    },
-    large: {
-      card: 'p-6',
-      title: 'text-lg font-semibold',
-      description: 'text-base',
-      dueDate: 'text-sm',
-    },
-  };
-
-  const currentSize = settings.interface.taskTileSize;
-  const styles = tileSizeStyles[currentSize] || tileSizeStyles.normal;
-
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Список задач</h1>
-        <div className="w-1/3">
-          <Input 
-            placeholder="Поиск..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
         <Button onClick={handleNewTask} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
           Новая задача
@@ -106,13 +61,13 @@ const List = () => {
             </CardContent>
           </Card>
         ) : (
-          filteredTasks.map((task) => (
+          tasks.map((task) => (
             <Card 
               key={task.id} 
-              className={cn(`border-l-4 cursor-pointer hover:shadow-md transition-shadow`, getPriorityColor(task.priority))}
+              className={`border-l-4 ${getPriorityColor(task.priority)} cursor-pointer hover:shadow-md transition-shadow`}
               onClick={() => handleEditTask(task)}
             >
-              <CardContent className={cn("flex items-center gap-4", styles.card)}>
+              <CardContent className="flex items-center gap-4 p-4">
                 <Checkbox
                   checked={task.completed}
                   onCheckedChange={(checked) => 
@@ -122,24 +77,26 @@ const List = () => {
                 />
                 
                 <div className="flex-1">
-                  <h3 className={cn(styles.title, task.completed ? 'line-through text-muted-foreground' : '')}>
+                  <h3 className={`font-medium ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
                     {task.title}
                   </h3>
                   {task.description && (
-                    <p className={cn(styles.description, "text-muted-foreground mt-1")}>
+                    <p className="text-sm text-muted-foreground mt-1">
                       {task.description}
                     </p>
                   )}
-                  <p className={cn(styles.dueDate, "text-muted-foreground mt-2")}>
+                  <p className="text-xs text-muted-foreground mt-2">
                     Срок: {task.dueDate.toLocaleDateString('ru-RU')}
                   </p>
                 </div>
                 
-                <div className={cn(`px-2 py-1 rounded-full text-xs font-medium`, {
-                  'bg-priority-high/10 text-priority-high': task.priority === 'high',
-                  'bg-priority-medium/10 text-priority-medium': task.priority === 'medium',
-                  'bg-priority-low/10 text-priority-low': task.priority !== 'high' && task.priority !== 'medium',
-                })}>
+                <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  task.priority === 'high' 
+                    ? 'bg-priority-high/10 text-priority-high' 
+                    : task.priority === 'medium'
+                    ? 'bg-priority-medium/10 text-priority-medium'
+                    : 'bg-priority-low/10 text-priority-low'
+                }`}>
                   {task.priority === 'high' ? 'Высокий' : 
                    task.priority === 'medium' ? 'Средний' : 'Низкий'}
                 </div>
