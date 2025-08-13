@@ -1,0 +1,14 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.electron.simplestrideplanner
+productName: ToDoLex
+files:
+  - filter:
+      - dist/**/*
+      - dist-electron/**/*
+win:
+  icon: public/ToDoLex.ico
+  verifyUpdateCodeSignature: false
+  forceCodeSigning: false
+electronVersion: 37.2.6
