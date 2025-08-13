@@ -1,13 +1,18 @@
-export interface Task {
+export type Task = {
   id: string;
   title: string;
   description?: string;
-  priority: 'low' | 'medium' | 'high';
-  completed: boolean;
   dueDate: Date;
+  time?: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  tags?: string[];
+  recurrenceRule?: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'weekdays' | 'weekends';
+  isArchived?: boolean;
+  lastNotifiedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export interface Settings {
   interface: {

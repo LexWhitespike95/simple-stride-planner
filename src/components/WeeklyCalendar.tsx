@@ -6,9 +6,10 @@ import { Card } from '@/components/ui/card';
 import { Task } from '@/types';
 import { TaskDialog } from './TaskDialog';
 import { cn } from '@/lib/utils';
-import { useSettings } from '@/hooks/useSettings';
+import { format, add, startOfWeek, endOfWeek } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
-interface MonthlyCalendarProps {
+interface WeeklyCalendarProps {
   tasks: Task[];
   onTaskCreate: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onTaskUpdate: (id: string, updates: Partial<Task>) => void;
@@ -17,15 +18,9 @@ interface MonthlyCalendarProps {
   openDaySidebar: (date: Date) => void;
 }
 
-const MONTHS = [
-  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-];
-
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchive, getTasksForDate, openDaySidebar }: MonthlyCalendarProps) {
-  const { settings } = useSettings();
+export function WeeklyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchive, getTasksForDate, openDaySidebar }: WeeklyCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
@@ -41,34 +36,18 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
     );
   }, [tasks, searchTerm]);
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-
-  const firstDayOfMonth = new Date(year, month, 1);
-  const lastDayOfMonth = new Date(year, month + 1, 0);
-  const startDate = new Date(firstDayOfMonth);
-  
-  const firstDayWeekday = (firstDayOfMonth.getDay() + 6) % 7;
-  startDate.setDate(startDate.getDate() - firstDayWeekday);
+  const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
+  const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
 
   const calendarDays: Date[] = [];
-  const current = new Date(startDate);
-  
-  for (let i = 0; i < 42; i++) {
-    calendarDays.push(new Date(current));
-    current.setDate(current.getDate() + 1);
+  let day = weekStart;
+  while (day <= weekEnd) {
+    calendarDays.push(day);
+    day = add(day, { days: 1 });
   }
 
-  const navigateMonth = (direction: 'prev' | 'next') => {
-    setCurrentDate(prevDate => {
-      const newDate = new Date(prevDate);
-      if (direction === 'prev') {
-        newDate.setMonth(newDate.getMonth() - 1);
-      } else {
-        newDate.setMonth(newDate.getMonth() + 1);
-      }
-      return newDate;
-    });
+  const navigateWeek = (direction: 'prev' | 'next') => {
+    setCurrentDate(prevDate => add(prevDate, { weeks: direction === 'prev' ? -1 : 1 }));
   };
 
   const handleDayClick = (date: Date) => {
@@ -103,19 +82,6 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
     }
   };
 
-  const tileSizeStyles = {
-    small: 'min-h-[90px]',
-    normal: 'min-h-[120px]',
-    large: 'min-h-[150px]',
-  };
-  const dayCardClass = tileSizeStyles[settings.interface.taskTileSize] || tileSizeStyles.normal;
-
-  const taskItemStyle = {
-    small: 'p-0.5 rounded text-[10px]',
-    normal: 'p-1 rounded text-xs',
-    large: 'p-1.5 rounded text-sm',
-  }[settings.interface.taskTileSize] || 'p-1 rounded text-xs';
-
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
@@ -124,19 +90,19 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
           <Button
             variant="outline"
             size="icon"
-            onClick={() => navigateMonth('prev')}
+            onClick={() => navigateWeek('prev')}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           
           <h2 className="text-2xl font-semibold">
-            {MONTHS[month]} {year}
+            {format(weekStart, 'd MMMM', { locale: ru })} - {format(weekEnd, 'd MMMM yyyy', { locale: ru })}
           </h2>
           
           <Button
             variant="outline"
             size="icon"
-            onClick={() => navigateMonth('next')}
+            onClick={() => navigateWeek('next')}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -152,7 +118,7 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
 
       {/* Calendar Grid */}
       <div className="flex-1 p-4">
-        <div className="grid grid-cols-7 gap-1 h-full">
+        <div className="grid grid-cols-7 gap-1">
           {/* Weekday headers */}
           {WEEKDAYS.map(day => (
             <div key={day} className="p-2 text-center text-sm font-medium text-muted-foreground">
@@ -162,7 +128,6 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
           
           {/* Calendar days */}
           {calendarDays.map((date, index) => {
-            const isCurrentMonth = date.getMonth() === month;
             const isToday = new Date().toDateString() === date.toDateString();
             const dayTasks = getTasksForDate(date).filter(task => filteredTasks.includes(task));
 
@@ -170,9 +135,7 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
               <Card
                 key={index}
                 className={cn(
-                  "p-2 cursor-pointer transition-colors hover:bg-muted/50",
-                  dayCardClass,
-                  !isCurrentMonth && "text-muted-foreground bg-muted/20",
+                  "min-h-[100px] p-2 cursor-pointer transition-colors hover:bg-muted/50",
                   isToday && "ring-2 ring-primary"
                 )}
                 onClick={() => handleDayClick(date)}
@@ -190,8 +153,7 @@ export function MonthlyCalendar({ tasks, onTaskCreate, onTaskUpdate, onTaskArchi
                       <div
                         key={task.id}
                         className={cn(
-                          "cursor-pointer hover:opacity-80 text-white",
-                          taskItemStyle,
+                          "p-1 rounded text-xs cursor-pointer hover:opacity-80 text-white",
                           getPriorityColor(task.priority),
                           task.completed && "opacity-50 line-through"
                         )}
