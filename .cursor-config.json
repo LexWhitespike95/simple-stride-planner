@@ -1,0 +1,7 @@
+{
+  "apiKeys": {
+    "openai": "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"
+  },
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-4-turbo"
+}

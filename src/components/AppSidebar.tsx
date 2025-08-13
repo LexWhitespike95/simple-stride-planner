@@ -1,4 +1,4 @@
-import { Calendar, Settings, List, BarChart3 } from "lucide-react";
+import { Calendar, Settings, List, BarChart3, Archive } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -9,13 +9,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
+import { useSidebar } from "@/hooks/useSidebar";
 
 const items = [
   { title: "Календарь", url: "/", icon: Calendar },
   { title: "Список", url: "/list", icon: List },
   { title: "Аналитика", url: "/analytics", icon: BarChart3 },
+  { title: "Архив", url: "/archive", icon: Archive },
   { title: "Настройки", url: "/settings", icon: Settings },
 ];
 
@@ -28,7 +29,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-primary font-semibold">
-            {!isCollapsed && "Simple Stride Planner"}
+            {!isCollapsed && "ToDoLex"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
