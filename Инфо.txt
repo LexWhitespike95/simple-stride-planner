@@ -1,89 +1,91 @@
-VM6:5 [Preload] Script loaded.
-chunk-T2SWDQEL.js?v=78a2f7a9:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
-react-router-dom.js?v=78a2f7a9:4393 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
-warnOnce @ react-router-dom.js?v=78a2f7a9:4393
-react-router-dom.js?v=78a2f7a9:4393 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
-warnOnce @ react-router-dom.js?v=78a2f7a9:4393
-VM4 sandbox_bundle:2 Electron Security Warning (Insecure Content-Security-Policy) This renderer process has either no Content Security
-  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
-  this app to unnecessary security risks.
+Что вижу в репо
 
-For more information and help, consult
-https://electronjs.org/docs/tutorial/security.
-This warning will not show up
-once the app is packaged.
-warnAboutInsecureCSP @ VM4 sandbox_bundle:2
-@radix-ui_react-dialog.js?v=78a2f7a9:339 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-(anonymous) @ @radix-ui_react-dialog.js?v=78a2f7a9:339
-commitHookEffectListMount @ chunk-T2SWDQEL.js?v=78a2f7a9:16915
-commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=78a2f7a9:18156
-commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=78a2f7a9:18129
-commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=78a2f7a9:18119
-commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:18109
-flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19490
-flushPassiveEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:19447
-commitRootImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19416
-commitRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:19277
-performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:18895
-flushSyncCallbacks @ chunk-T2SWDQEL.js?v=78a2f7a9:9119
-(anonymous) @ chunk-T2SWDQEL.js?v=78a2f7a9:18627
-@radix-ui_react-dialog.js?v=78a2f7a9:325 `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+Репозиторий выглядит как сгенерированный из Lovable (шаблонный README и ссылка на проект в Lovable) 
+GitHub
+.
 
-If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+В корне есть папка electron/ — значит планируется десктоп-обёртка (Electron) поверх Vite/React 
+GitHub
+.
 
-For more information, see https://radix-ui.com/primitives/docs/components/dialog
-(anonymous) @ @radix-ui_react-dialog.js?v=78a2f7a9:325
-commitHookEffectListMount @ chunk-T2SWDQEL.js?v=78a2f7a9:16915
-commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=78a2f7a9:18156
-commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=78a2f7a9:18129
-commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=78a2f7a9:18119
-commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:18109
-flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19490
-flushPassiveEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:19447
-commitRootImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19416
-commitRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:19277
-performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:18895
-flushSyncCallbacks @ chunk-T2SWDQEL.js?v=78a2f7a9:9119
-(anonymous) @ chunk-T2SWDQEL.js?v=78a2f7a9:18627
-@radix-ui_react-dialog.js?v=78a2f7a9:339 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-(anonymous) @ @radix-ui_react-dialog.js?v=78a2f7a9:339
-commitHookEffectListMount @ chunk-T2SWDQEL.js?v=78a2f7a9:16915
-commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=78a2f7a9:18156
-commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=78a2f7a9:18129
-commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=78a2f7a9:18119
-commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:18109
-flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19490
-flushPassiveEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:19447
-commitRootImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19416
-commitRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:19277
-performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:18895
-flushSyncCallbacks @ chunk-T2SWDQEL.js?v=78a2f7a9:9119
-(anonymous) @ chunk-T2SWDQEL.js?v=78a2f7a9:18627
-@radix-ui_react-dialog.js?v=78a2f7a9:339 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-(anonymous) @ @radix-ui_react-dialog.js?v=78a2f7a9:339
-commitHookEffectListMount @ chunk-T2SWDQEL.js?v=78a2f7a9:16915
-commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=78a2f7a9:18156
-commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=78a2f7a9:18129
-commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=78a2f7a9:18119
-commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:18109
-flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19490
-flushPassiveEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:19447
-commitRootImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19416
-commitRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:19277
-performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:18895
-flushSyncCallbacks @ chunk-T2SWDQEL.js?v=78a2f7a9:9119
-(anonymous) @ chunk-T2SWDQEL.js?v=78a2f7a9:18627
-@radix-ui_react-dialog.js?v=78a2f7a9:339 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-(anonymous) @ @radix-ui_react-dialog.js?v=78a2f7a9:339
-commitHookEffectListMount @ chunk-T2SWDQEL.js?v=78a2f7a9:16915
-commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=78a2f7a9:18156
-commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=78a2f7a9:18129
-commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=78a2f7a9:18119
-commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:18109
-flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19490
-flushPassiveEffects @ chunk-T2SWDQEL.js?v=78a2f7a9:19447
-commitRootImpl @ chunk-T2SWDQEL.js?v=78a2f7a9:19416
-commitRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:19277
-performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=78a2f7a9:18895
-flushSyncCallbacks @ chunk-T2SWDQEL.js?v=78a2f7a9:9119
-(anonymous) @ chunk-T2SWDQEL.js?v=78a2f7a9:18627
+node_modules/ закоммичен в репозиторий — это критичная антипрактика (раздувает историю/клон и ломает детерминизм сборки) 
+GitHub
+.
+
+Есть bun.lockb → использовался пакетный менеджер Bun (стоит определиться с одним менеджером) 
+GitHub
+.
+
+Конфиги Vite/Tailwind/TS (vite.config.ts, tailwind.config.ts, tsconfig*.json) — структура фронта ок 
+GitHub
+.
+
+Срочно поправить
+
+Убрать node_modules из гита и истории
+
+# в корне репо
+echo "node_modules/" >> .gitignore
+git rm -r --cached node_modules
+git add .gitignore
+git commit -m "chore: stop tracking node_modules"
+git push
+
+
+Если история уже сильно разрослась — позже можно “почистить” её BFG или git filter-repo.
+
+Выбрать один пакетный менеджер
+Сейчас в репо есть bun.lockb. Либо оставайся на Bun:
+
+bun install
+bun run dev
+
+
+либо переходи на npm/pnpm (удали bun.lockb, зафиксируй package-lock.json или pnpm-lock.yaml и используй один менеджер в CI/CD).
+
+Зафиксировать направление синка: GitHub → Lovable
+Так как репо уже помечено как «Lovable project», Lovable может коммитить обратно. Чтобы не повторилась перезапись:
+
+Защити main на GitHub (branch protection: запрет прямых пушей и force-push; разрешить только PR’ы). Тогда пуш из Lovable в main будет отклоняться, а pull в Lovable из GitHub продолжит работать.
+
+Работай в GitHub, пушь в main, а в Lovable только «читай» изменения. (Если когда-то нужно коммитить из Lovable — делай это во временную ветку и мёрджи через PR.)
+
+Порядок в корне
+
+Добавь README под проект (с установкой, скриптами, архитектурой) вместо шаблонного. Сейчас там «Welcome to your Lovable project» — это неинформативно для внешних контрибьюторов 
+GitHub
+.
+
+Проверь .gitignore (добавь dist/, .vite/, out/, *.log, и т.п.).
+
+Проверь, что нет секретов (.env). Если есть — вынеси в .env.example.
+
+Electron: минимальные next-steps
+
+Раз в репо есть electron/, проверь, чтобы были три роли:
+
+main (основной процесс, создание BrowserWindow),
+
+preload (безопасный мост к renderer),
+
+renderer (твой Vite/React).
+В package.json должны быть скрипты типа:
+
+{
+  "scripts": {
+    "dev": "vite",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "vite build",
+    "electron:build": "electron-builder"
+  }
+}
+
+
+И конфиг electron-builder (в package.json или electron-builder.yml) для сборки инсталляторов.
+
+CI/CD (по желанию, но полезно)
+
+GitHub Actions: джобы lint → build (Vite) → test → (опционально) electron:build.
+
+Кэш node_modules (или bun cache) по lock-файлу.
+

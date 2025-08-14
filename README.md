@@ -1,73 +1,50 @@
-# Welcome to your Lovable project
+# ToDoLex - Simple Stride Planner
 
-## Project info
+ToDoLex is a desktop task management application built with Electron and React. It provides monthly and weekly calendar views to help you plan your tasks efficiently.
 
-**URL**: https://lovable.dev/projects/71bee636-ca6b-48ac-8698-255f5d30a758
+## Tech Stack
 
-## How can I edit this code?
+- **Framework:** React
+- **Bundler:** Vite
+- **Desktop Shell:** Electron
+- **Language:** TypeScript
+- **UI Components:** shadcn/ui
+- **Styling:** Tailwind CSS
+- **Package Manager:** Bun
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/71bee636-ca6b-48ac-8698-255f5d30a758) and start prompting.
+Make sure you have [Node.js](https://nodejs.org/) and [Bun](https://bun.sh/) installed on your system.
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
+1.  Clone the repository:
+    ```sh
+    git clone https://github.com/LexWhitespike95/simple-stride-planner.git
+    ```
+2.  Navigate to the project directory:
+    ```sh
+    cd simple-stride-planner
+    ```
+3.  Install the dependencies:
+    ```sh
+    bun install
+    ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Running the Application
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+To run the application in development mode, which enables hot-reloading:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm run electron:dev
 ```
 
-**Edit a file directly in GitHub**
+## Available Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/71bee636-ca6b-48ac-8698-255f5d30a758) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+-   `npm run dev`: Starts the Vite development server for the web interface.
+-   `npm run build`: Builds the web interface for production.
+-   `npm run lint`: Lints the codebase using ESLint.
+-   `npm run electron:dev`: Runs the full desktop application in development mode.
+-   `npm run electron:build`: Builds the distributable desktop application.
