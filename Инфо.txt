@@ -1,91 +1,78 @@
-Что вижу в репо
+все, что было в консоли самого приложения
+VM7:5 [Preload] Script loaded.
+chunk-T2SWDQEL.js?v=fcb5e26b:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+react-router-dom.js?v=613b2656:4393 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+warnOnce @ react-router-dom.js?v=613b2656:4393
+react-router-dom.js?v=613b2656:4393 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+warnOnce @ react-router-dom.js?v=613b2656:4393
+VM4 sandbox_bundle:2 Electron Security Warning (Insecure Content-Security-Policy) This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
 
-Репозиторий выглядит как сгенерированный из Lovable (шаблонный README и ссылка на проект в Lovable) 
-GitHub
-.
-
-В корне есть папка electron/ — значит планируется десктоп-обёртка (Electron) поверх Vite/React 
-GitHub
-.
-
-node_modules/ закоммичен в репозиторий — это критичная антипрактика (раздувает историю/клон и ломает детерминизм сборки) 
-GitHub
-.
-
-Есть bun.lockb → использовался пакетный менеджер Bun (стоит определиться с одним менеджером) 
-GitHub
-.
-
-Конфиги Vite/Tailwind/TS (vite.config.ts, tailwind.config.ts, tsconfig*.json) — структура фронта ок 
-GitHub
-.
-
-Срочно поправить
-
-Убрать node_modules из гита и истории
-
-# в корне репо
-echo "node_modules/" >> .gitignore
-git rm -r --cached node_modules
-git add .gitignore
-git commit -m "chore: stop tracking node_modules"
-git push
-
-
-Если история уже сильно разрослась — позже можно “почистить” её BFG или git filter-repo.
-
-Выбрать один пакетный менеджер
-Сейчас в репо есть bun.lockb. Либо оставайся на Bun:
-
-bun install
-bun run dev
-
-
-либо переходи на npm/pnpm (удали bun.lockb, зафиксируй package-lock.json или pnpm-lock.yaml и используй один менеджер в CI/CD).
-
-Зафиксировать направление синка: GitHub → Lovable
-Так как репо уже помечено как «Lovable project», Lovable может коммитить обратно. Чтобы не повторилась перезапись:
-
-Защити main на GitHub (branch protection: запрет прямых пушей и force-push; разрешить только PR’ы). Тогда пуш из Lovable в main будет отклоняться, а pull в Lovable из GitHub продолжит работать.
-
-Работай в GitHub, пушь в main, а в Lovable только «читай» изменения. (Если когда-то нужно коммитить из Lovable — делай это во временную ветку и мёрджи через PR.)
-
-Порядок в корне
-
-Добавь README под проект (с установкой, скриптами, архитектурой) вместо шаблонного. Сейчас там «Welcome to your Lovable project» — это неинформативно для внешних контрибьюторов 
-GitHub
-.
-
-Проверь .gitignore (добавь dist/, .vite/, out/, *.log, и т.п.).
-
-Проверь, что нет секретов (.env). Если есть — вынеси в .env.example.
-
-Electron: минимальные next-steps
-
-Раз в репо есть electron/, проверь, чтобы были три роли:
-
-main (основной процесс, создание BrowserWindow),
-
-preload (безопасный мост к renderer),
-
-renderer (твой Vite/React).
-В package.json должны быть скрипты типа:
-
-{
-  "scripts": {
-    "dev": "vite",
-    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "build": "vite build",
-    "electron:build": "electron-builder"
-  }
-}
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+warnAboutInsecureCSP @ VM4 sandbox_bundle:2
+@radix-ui_react-dialog.js?v=f3e357b2:339 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=f3e357b2:339
+commitHookEffectListMount @ chunk-T2SWDQEL.js?v=fcb5e26b:16915
+commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=fcb5e26b:18156
+commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=fcb5e26b:18129
+commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=fcb5e26b:18119
+commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=fcb5e26b:18109
+flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=fcb5e26b:19490
+flushPassiveEffects @ chunk-T2SWDQEL.js?v=fcb5e26b:19447
+commitRootImpl @ chunk-T2SWDQEL.js?v=fcb5e26b:19416
+commitRoot @ chunk-T2SWDQEL.js?v=fcb5e26b:19277
+performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=fcb5e26b:18895
+flushSyncCallbacks @ chunk-T2SWDQEL.js?v=fcb5e26b:9119
+(anonymous) @ chunk-T2SWDQEL.js?v=fcb5e26b:18627
+@radix-ui_react-dialog.js?v=f3e357b2:339 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=f3e357b2:339
+commitHookEffectListMount @ chunk-T2SWDQEL.js?v=fcb5e26b:16915
+commitPassiveMountOnFiber @ chunk-T2SWDQEL.js?v=fcb5e26b:18156
+commitPassiveMountEffects_complete @ chunk-T2SWDQEL.js?v=fcb5e26b:18129
+commitPassiveMountEffects_begin @ chunk-T2SWDQEL.js?v=fcb5e26b:18119
+commitPassiveMountEffects @ chunk-T2SWDQEL.js?v=fcb5e26b:18109
+flushPassiveEffectsImpl @ chunk-T2SWDQEL.js?v=fcb5e26b:19490
+flushPassiveEffects @ chunk-T2SWDQEL.js?v=fcb5e26b:19447
+commitRootImpl @ chunk-T2SWDQEL.js?v=fcb5e26b:19416
+commitRoot @ chunk-T2SWDQEL.js?v=fcb5e26b:19277
+performSyncWorkOnRoot @ chunk-T2SWDQEL.js?v=fcb5e26b:18895
+flushSyncCallbacks @ chunk-T2SWDQEL.js?v=fcb5e26b:9119
+(anonymous) @ chunk-T2SWDQEL.js?v=fcb5e26b:18627
+App.tsx:40 Checking for overdue tasks...
+App.tsx:45 Task "Я нимагу канешна" is overdue. Sending notification.
+VM7:8 [Preload] Calling ipcRenderer.invoke with: {title: 'Просроченная задача!', body: 'Задача "Я нимагу канешна" должна была быть выполнена к 13.08.2025.'}
 
 
-И конфиг electron-builder (в package.json или electron-builder.yml) для сборки инсталляторов.
+всё, что было в терминале, через который программа была запущена
+PS D:\Program\Depelop\GitHub\simple-stride-planner> npm run electron:dev
 
-CI/CD (по желанию, но полезно)
+> vite_react_shadcn_ts@0.0.0 electron:dev
+> concurrently "npm run dev" "wait-on http://localhost:8080 && npm run electron:compile && electron dist-electron/main.cjs"
 
-GitHub Actions: джобы lint → build (Vite) → test → (опционально) electron:build.
-
-Кэш node_modules (или bun cache) по lock-файлу.
-
+[0] 
+[0] > vite_react_shadcn_ts@0.0.0 dev
+[0] > vite
+[0] 
+[0] Port 8080 is in use, trying another one...
+[0] 
+[0]   VITE v5.4.19  ready in 185 ms
+[0] 
+[0]   ➜  Local:   http://localhost:8081/      
+[0]   ➜  Network: http://10.102.37.150:8081/  
+[0]   ➜  Network: http://192.168.31.176:8081/ 
+[1] 
+[1] > vite_react_shadcn_ts@0.0.0 electron:compile
+[1] > tsc -p electron/tsconfig.json && move /Y dist-electron\main.js dist-electron\main.cjs
+[1]
+[1] ��६�饭� 䠩���:         1.
+[1] 
+[1] __dirname: D:\Program\Depelop\GitHub\simple-stride-planner\dist-electron
+[1] [8932:0815/025605.744:ERROR:CONSOLE:1] "Request Autofill.enable failed. {"code":-32601,"message":"'Autofill.enable' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+[1] [8932:0815/025605.744:ERROR:CONSOLE:1] "Request Autofill.setAddresses failed. {"code":-32601,"message":"'Autofill.setAddresses' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+[1] [Main Process] Received notification request: Title=Просроченная задача!
+[1] [Main Process] Notifications are supported.
+[1] [Main Process] Notification shown successfully.
