@@ -12,6 +12,7 @@ export type Task = {
   lastNotifiedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  seriesId?: string;
 };
 
 export interface Settings {

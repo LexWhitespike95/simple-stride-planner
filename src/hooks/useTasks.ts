@@ -1,5 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Task } from '@/types';
+import { addDays, addWeeks, addMonths, addYears, endOfDay } from 'date-fns';
+
+// --- Helper function to calculate the next due date ---
+function getNextDueDate(currentDueDate: Date, rule: Task['recurrenceRule']): Date | null {
+  switch (rule) {
+    case 'daily':
+      return addDays(currentDueDate, 1);
+    case 'weekly':
+      return addWeeks(currentDueDate, 1);
+    case 'monthly':
+      return addMonths(currentDueDate, 1);
+    case 'yearly':
+      return addYears(currentDueDate, 1);
+    default:
+      return null;
+  }
+}
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -12,7 +29,8 @@ export const useTasks = () => {
         ...task,
         dueDate: new Date(task.dueDate),
         createdAt: new Date(task.createdAt),
-        updatedAt: new Date(task.updatedAt)
+        updatedAt: new Date(task.updatedAt),
+        lastNotifiedAt: task.lastNotifiedAt ? new Date(task.lastNotifiedAt) : undefined,
       })));
     }
   }, []);
@@ -22,17 +40,54 @@ export const useTasks = () => {
     localStorage.setItem('stride-planner-tasks', JSON.stringify(newTasks));
   };
 
-  const addTask = (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const newTask: Task = {
-      ...task,
+  const addTask = (taskData: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const newTasks: Task[] = [];
+    const now = new Date();
+    
+    const firstTask: Task = {
+      ...taskData,
       id: crypto.randomUUID(),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: now,
+      updatedAt: now,
+      completed: false,
     };
-    saveTasks([...tasks, newTask]);
+
+    // If it's a recurring task, generate instances
+    if (taskData.recurrenceRule && taskData.recurrenceRule !== 'none') {
+      const seriesId = crypto.randomUUID();
+      firstTask.seriesId = seriesId;
+      newTasks.push(firstTask);
+
+      let currentDueDate = new Date(firstTask.dueDate);
+      const threeMonthsFromNow = addMonths(now, 3); // Generate for the next 3 months
+
+      while (true) {
+        const nextDueDate = getNextDueDate(currentDueDate, taskData.recurrenceRule);
+
+        if (nextDueDate && nextDueDate <= threeMonthsFromNow) {
+          newTasks.push({
+            ...firstTask,
+            id: crypto.randomUUID(),
+            seriesId: seriesId,
+            dueDate: nextDueDate,
+          });
+          currentDueDate = nextDueDate;
+        } else {
+          break; // Stop if next date is null or beyond the generation horizon
+        }
+      }
+    } else {
+      // It's a single, non-recurring task
+      newTasks.push(firstTask);
+    }
+
+    saveTasks([...tasks, ...newTasks]);
   };
 
   const updateTask = (id: string, updates: Partial<Task>) => {
+    // The old recurrence logic is removed from here.
+    // A more complex logic would be needed to update a whole series,
+    // but for now, we update only a single instance.
     const updatedTasks = tasks.map(task =>
       task.id === id
         ? { ...task, ...updates, updatedAt: new Date() }
@@ -42,17 +97,26 @@ export const useTasks = () => {
   };
 
   const deleteTask = (id: string) => {
+    // A more complex logic would be needed to delete a whole series.
+    // For now, we delete only a single instance.
     saveTasks(tasks.filter(task => task.id !== id));
   };
 
+  const archiveTask = (id: string) => {
+    updateTask(id, { isArchived: true, completed: true });
+  };
+
+  const unarchiveTask = (id: string) => {
+    updateTask(id, { isArchived: false });
+  };
+
   const getTasksForDate = (date: Date) => {
+    const start = date;
+    const end = endOfDay(date);
     return tasks.filter(task => {
+      if (task.isArchived) return false;
       const taskDate = new Date(task.dueDate);
-      return (
-        taskDate.getDate() === date.getDate() &&
-        taskDate.getMonth() === date.getMonth() &&
-        taskDate.getFullYear() === date.getFullYear()
-      );
+      return taskDate >= start && taskDate <= end;
     });
   };
 
@@ -93,6 +157,8 @@ export const useTasks = () => {
     addTask,
     updateTask,
     deleteTask,
+    archiveTask,
+    unarchiveTask,
     getTasksForDate,
     exportTasks,
     importTasks

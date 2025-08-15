@@ -128,12 +128,16 @@ export function SettingsPage({ onExportTasks, onImportTasks }: SettingsPageProps
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="notificationSound">Звук уведомлений</Label>
-                <Switch 
-                  id="notificationSound"
-                  checked={settings.notifications.notificationSound}
-                  onCheckedChange={(checked) => updateNotificationSettings({ notificationSound: checked })}
-                />
+                <Label htmlFor="notificationSound" className="text-muted-foreground">Звук уведомлений</Label>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">(в разработке)</span>
+                  <Switch 
+                    id="notificationSound"
+                    checked={settings.notifications.notificationSound}
+                    onCheckedChange={(checked) => updateNotificationSettings({ notificationSound: checked })}
+                    disabled
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -147,20 +151,28 @@ export function SettingsPage({ onExportTasks, onImportTasks }: SettingsPageProps
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
-                <Label htmlFor="autoArchive">Авто-архивация выполненных задач</Label>
-                <Switch 
-                  id="autoArchive"
-                  checked={settings.automation.autoArchiveCompleted}
-                  onCheckedChange={(checked) => updateAutomationSettings({ autoArchiveCompleted: checked })}
-                />
+                <Label htmlFor="autoArchive" className="text-muted-foreground">Авто-архивация выполненных задач</Label>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">(в разработке)</span>
+                  <Switch 
+                    id="autoArchive"
+                    checked={settings.automation.autoArchiveCompleted}
+                    onCheckedChange={(checked) => updateAutomationSettings({ autoArchiveCompleted: checked })}
+                    disabled
+                  />
+                </div>
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="deleteOverdue">Удалять просроченные задачи</Label>
-                <Switch 
-                  id="deleteOverdue"
-                  checked={settings.automation.deleteOverdue}
-                  onCheckedChange={(checked) => updateAutomationSettings({ deleteOverdue: checked })}
-                />
+                <Label htmlFor="deleteOverdue" className="text-muted-foreground">Удалять просроченные задачи</Label>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">(в разработке)</span>
+                  <Switch 
+                    id="deleteOverdue"
+                    checked={settings.automation.deleteOverdue}
+                    onCheckedChange={(checked) => updateAutomationSettings({ deleteOverdue: checked })}
+                    disabled
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -163,8 +163,8 @@ export function TaskDialog({
                 <SelectItem value="weekly">Еженедельно</SelectItem>
                 <SelectItem value="monthly">Ежемесячно</SelectItem>
                 <SelectItem value="yearly">Ежегодно</SelectItem>
-                <SelectItem value="weekdays">По будням</SelectItem>
-                <SelectItem value="weekends">По выходным</SelectItem>
+                <SelectItem value="weekdays" disabled>По будням (в разработке)</SelectItem>
+                <SelectItem value="weekends" disabled>По выходным (в разработке)</SelectItem>
               </SelectContent>
             </Select>
           </div>
